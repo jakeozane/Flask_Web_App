@@ -4,6 +4,19 @@ Authors:
 - Jacob Morrow
 - Lyell Read
 
+## Outline
+Notasting, ‘totally not a CIA operation’, sells $1 million of questionable goods a year. To support
+this, a database-driven website was implemented in order to record the sales data related to orders
+of purchased products from inventory to users whose user information is being sold to third parties.
+Essentially, the database will be used to track orders and how that order information has been sold
+on to third party information aggregators. This is so that Notasting can understand how their
+operations are related to the CIA surveillance they are ‘totally not participating in’.
+The database will relate Products to SaleData using ProductsPurchased, an intersection of those
+two entities. Further, Products will be related to Inventory in one of the central warehouses that
+Notasting runs. The SaleData will be associated with UserData for the user that made the purchase,
+and that UserData will be associated with a ThirdParty to whom that UserData was exclusively
+sold.
+
 ## Notes
 
 - Data Definition Queries (`./notasting_db_ddq.sql`) can be imported using `mysql` commandline utility.

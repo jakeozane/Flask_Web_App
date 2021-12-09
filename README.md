@@ -1,4 +1,4 @@
-# Notasting CS 340 Project
+# Notasting - Database Project
 
 Authors:
 - Jacob Morrow

@@ -1,0 +1,93 @@
+{% extends "main.j2" %}
+
+{% block body %}
+
+{% if error is defined %}
+    <div class="isa_error">
+        <i class="fa fa-times-circle"></i>
+        Your Request Errored: {{error}}
+    </div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="isa_success">
+        <i class="fa fa-check"></i>
+        Request Succeeded!
+    </div>
+{% endif %}
+
+{% if productspurchased|count == 0 %}
+    <div class="isa_info">
+        <i class="fa fa-info-circle"></i>
+        No products purchased in table. Please add entries to the table to interact with them.
+    </div>
+{% endif %}
+
+<br>
+
+<form action="{{ url_for('productspurchased')}}" method="post">
+    <h2>Enter a new Product Purchased</h2>
+
+    <br>
+    <label for="productID">Product ID:</label>
+    <select id="productID" name="productID">
+        {% for i in products %}
+        <option value="{{i['productID']}}">{{i['productID']}} ({{i['productName']}})</option>
+        {% endfor %}
+    </select>
+
+    <label for="purchaseID">Purchase ID:</label>
+    <select id="purchaseID" name="purchaseID">
+        {% for i in salesdata %}
+        <option value="{{i['purchaseID']}}">{{i['purchaseID']}} ({{i['total']}})</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+    <input type="submit" value="Enter" />
+</form>
+
+{% if productspurchased|count > 0 %} 
+
+<br>
+<h2>Products Purchased:</h2>
+<label for="searchParam">Search:</label>
+<input type="text" id="searchParam" placeholder="Enter Search Query" onkeyup="tableSearch()">
+<br>
+<br>
+<table class="table" id="pageTable">
+<thead class="thead-dark">
+<tr>
+
+    <th>Product ID</th>
+    <th>Purchase ID</th>
+    <th>Modify</th>
+    <th>Delete</th>
+</tr>
+</thead>
+
+<tbody>
+{% for product in productspurchased %}
+<tr>
+    <!-- Then iterate through every key in the current product dictionary -->
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{product['informativeProductID']}}</td>
+    <td>{{product['informativePurchaseID']}}</td>
+
+    <td>
+        <form action="/productspurchased/update/{{product['productID']}}/{{product['purchaseID']}}" method="get">
+            <input type="submit" value="Modify" />
+        </form>
+    </td>
+    <td>
+        <form action="/productspurchased/delete/{{product['productID']}}/{{product['purchaseID']}}" method="post">
+            <input type="submit" value="Delete" />
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+{% endblock %}

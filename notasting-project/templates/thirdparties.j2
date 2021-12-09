@@ -1,0 +1,73 @@
+{% extends "main.j2" %}
+
+{% block body %}
+
+{% if error is defined %}
+    <div class="isa_error">
+        <i class="fa fa-times-circle"></i>
+        Your Request Errored: {{error}}
+    </div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="isa_success">
+        <i class="fa fa-check"></i>
+        Request Succeeded!
+    </div>
+{% endif %}
+
+<br>
+
+<form action="{{ url_for('thirdparties')}}" method="post">
+    <h2>Enter new Third Party</h2>
+
+    <br>
+    <label for=thirdPartyName>Third Party Name</label>
+    <input type="text" id="thirdPartyName" name="thirdPartyName" placeholder="Enter thirdPartyName">
+
+    <br><br>
+    <label for="description">Description</label>
+    <input type="text" id="description" name="description" placeholder="Enter description">
+
+    <br><br>
+    <input type="submit" value="Enter" />
+</form>
+<br>
+<br>
+
+<h2>Third Parties:</h2>
+<label for="searchParam">Search:</label>
+<input type="text" id="searchParam" placeholder="Enter Search Query" onkeyup="tableSearch()">
+<br>
+<br>
+
+
+<table class="table" id="pageTable">
+<thead class="thead-dark">
+<tr>
+    <!-- Iterate through each key in the first entry to get the
+    column name -->
+    {% for key in thirdparties[0].keys() %}
+
+    <!-- Create a <th> tag with the key inside of it, this will be
+    our header row -->
+    <th>{{ key }}</th>
+
+    <!-- End of this for loop -->
+    {% endfor %}
+</tr>
+<tbody>
+
+<!-- Now, iterate through every party in thirdparties -->
+{% for party in thirdparties %}
+<tr>
+    <!-- Then iterate through every key in the current party dictionary -->
+    {% for key in party.keys() %}
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{party[key]}}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "main.j2" %}
+
+{% block body %}
+<form action="/products/update/{{product[0]['productID']}}" method="post">
+	<h2>Update Entry for Product {{product[0]['productID']}}</h2>
+
+	<label for="productName">Product Name</label>
+	<input type="text" id="productName" name="productName" value="{{product[0]['productName']}}"/>
+	<br>
+	<label for="description">Description</label>
+	<input type="text" id="description" name="description" value="{{product[0]['description']}}"/>
+	<br>
+	<label for="price">Price</label>
+	<input type="text" id="price" name="price" value="{{product[0]['price']}}"/>
+	<br>
+	<label for="inventoryID">Inventory ID:</label>
+    <select id="inventoryID" name="inventoryID">
+    	<!-- Include an entry at the top as the current -->
+    	<option selected value="{{product[0]['inventoryID']}}">{{product[0]['inventoryID']}} (current value)</option>
+    	<!-- Now add all the possible product IDs -->
+        {% for i in inventories %}
+        <option value="{{i['inventoryID']}}">{{i['inventoryID']}} ({{i['location']}})</option>
+        {% endfor %}
+    </select>
+	<input type="submit" value="Enter"/>
+</form>
+{% endblock %}

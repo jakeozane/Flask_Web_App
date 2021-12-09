@@ -1,0 +1,107 @@
+{% extends "main.j2" %}
+
+{% block body %}
+
+{% if error is defined %}
+    <div class="isa_error">
+        <i class="fa fa-times-circle"></i>
+        Your Request Errored: {{error}}
+    </div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="isa_success">
+        <i class="fa fa-check"></i>
+        Request Succeeded!
+    </div>
+{% endif %}
+
+{% if products|count == 0 %}
+    <div class="isa_info">
+        <i class="fa fa-info-circle"></i>
+        No products in table. Please add products to interact with them.
+    </div>
+{% endif %}
+
+<br>
+
+<form action="{{ url_for('products')}}" method="post">
+    <h2>Enter a new Product:</h2>
+
+    <label for="productName">Product Name</label>
+    <input type="text" id="productName" name="productName" placeholder="Enter product name"/>
+
+    <br><br>
+    <label for="description">Description</label>
+    <input type="text" id="description" name="description" placeholder="Enter description"/>
+
+    <br><br>
+    <label for="price">Price</label>
+    <input type="text" id="price" name="price" placeholder="Enter price"/>
+
+    <br><br>
+    <label for="inventoryID">Inventory:</label>
+    <select id="inventoryID" name="inventoryID">
+        {% for i in inventories %}
+        <option value="{{i['inventoryID']}}">{{i['inventoryID']}} ({{i['location']}})</option>
+        {% endfor %}
+        <option value="NULL">Null (Unavailable)</option>
+    </select>
+
+    <br><br>
+    <input type="submit" value="Enter" />
+</form>
+
+{% if products|count > 0 %}
+<br>
+<h2>Products:</h2>
+<label for="searchParam">Search:</label>
+<input type="text" id="searchParam" placeholder="Enter Search Query" onkeyup="tableSearch()">
+<br>
+<br>
+<table class="table" id="pageTable">
+<thead class="thead-dark">
+<tr>
+    <!-- Iterate through each key in the first entry to get the
+    column name -->
+    {% for key in products[0].keys() %}
+
+    <!-- Create a <th> tag with the key inside of it, this will be
+    our header row -->
+    <th>{{ key }}</th>
+
+    <!-- End of this for loop -->
+    {% endfor %}
+    <th>Modify</th>
+    <th>Delete</th>
+</tr>
+</thead>
+<tbody>
+
+<!-- Now, iterate through every product in products -->
+{% for product in products %}
+<tr>
+    <!-- Then iterate through every key in the current product dictionary -->
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{product['productID']}}</td>
+    <td>{{product['productName']}}</td>
+    <td>{{product['description']}}</td>
+    <td>{{product['price']}}</td>
+    <td>{{product['inventoryID']}}</td>
+    <td>
+        <form action="/products/update/{{product['productID']}}" method="get">
+            <input type="submit" value="Modify" />
+        </form>
+    </td>
+    <td>
+        <form action="/products/delete/{{product['productID']}}" method="post">
+            <input type="submit" value="Delete" />
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "main.j2" %}
+
+{% block body %}
+
+{% if error is defined %}
+    <div class="isa_error">
+        <i class="fa fa-times-circle"></i>
+        Your Request Errored: {{error}}
+    </div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="isa_success">
+        <i class="fa fa-check"></i>
+        Request Succeeded!
+    </div>
+{% endif %}
+
+<br>
+
+<form action="{{ url_for('salesdata')}}" method="post">
+   <h2>Enter a new Sale Data</h2>
+
+   <br>
+    <label for="userID">User ID:</label>
+    <select id="userID" name="userID">
+        {% for i in userdata %}
+        <option value="{{i['userID']}}">{{i['userID']}} ({{i['lastName']}}, {{i['firstName']}})</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+    <label for="total">Total</label>
+    <input type="text" id="total" name="total" placeholder="Enter total">
+
+    <br><br>
+    <input type="submit" value="Enter" />
+</form>
+<br>
+<h2>Sales Data:</h2>
+<label for="searchParam">Search:</label>
+<input type="text" id="searchParam" placeholder="Enter Search Query" onkeyup="tableSearch()">
+<br>
+<br>
+<table class="table" id="pageTable">
+<thead class="thead-dark">
+<tr>
+    <!-- Iterate through each key in the first entry to get the
+    column name -->
+    {% for key in salesdata[0].keys() %}
+
+    <!-- Create a <th> tag with the key inside of it, this will be
+    our header row -->
+    <th>{{ key }}</th>
+
+    <!-- End of this for loop -->
+    {% endfor %}
+</tr>
+<tbody>
+
+<!-- Now, iterate through every sale in salesdata -->
+{% for sale in salesdata %}
+<tr>
+    <!-- Then iterate through every key in the current sale dictionary -->
+    {% for key in sale.keys() %}
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{sale[key]}}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

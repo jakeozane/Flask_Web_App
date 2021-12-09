@@ -1,0 +1,91 @@
+{% extends "main.j2" %}
+
+{% block body %}
+
+{% if error is defined %}
+    <div class="isa_error">
+        <i class="fa fa-times-circle"></i>
+        Your Request Errored: {{error}}
+    </div>
+{% endif %}
+
+{% if success is defined %}
+    <div class="isa_success">
+        <i class="fa fa-check"></i>
+        Request Succeeded!
+    </div>
+{% endif %}
+
+<br>
+
+<form action="{{ url_for('userdata')}}" method="post">
+    <h2>Enter a new User Data Entry:</h2>
+
+    <br>
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" name="firstName" placeholder="Enter firstName">
+
+    <br><br>
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" name="lastName" placeholder="Enter lastName">
+
+    <br><br>
+    <label for="streetAddress">Street Address</label>
+    <input type="text" id="streetAddress" name="streetAddress" placeholder="Enter streetAddress">
+
+    <br><br>
+    <label for="zipCode">Zip Code</label>
+    <input type="text" id="zipCode" name="zipCode" placeholder="Enter zipCode">
+
+    <br><br>
+    <label for="countryCode">Country Code</label>
+    <input type="text" id="countryCode" name="countryCode" placeholder="Enter countryCode">
+
+    <br><br>
+    <label for="thirdPartyID">ThirdParty ID:</label>
+    <select id="thirdPartyID" name="thirdPartyID">
+        {% for i in thirdparties %}
+        <option value="{{i['thirdPartyID']}}">{{i['thirdPartyID']}} ({{i['thirdPartyName']}})</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+    <input type="submit" value="Enter"/>
+</form>
+
+<br>
+<h2>User Data:</h2>
+<label for="searchParam">Search:</label>
+<input type="text" id="searchParam" placeholder="Enter Search Query" onkeyup="tableSearch()">
+<br>
+<br>
+
+<table class="table" id="pageTable">
+<thead class="thead-dark">
+<tr>
+    <!-- Iterate through each key in the first entry to get the
+    column name -->
+    {% for key in userdata[0].keys() %}
+
+    <!-- Create a <th> tag with the key inside of it, this will be
+    our header row -->
+    <th>{{ key }}</th>
+
+    <!-- End of this for loop -->
+    {% endfor %}
+</tr>
+<tbody>
+
+<!-- Now, iterate through each data point in userdata -->
+{% for data in userdata %}
+<tr>
+    <!-- Then iterate through every key in the current data dictionary -->
+    {% for key in data.keys() %}
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{data[key]}}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

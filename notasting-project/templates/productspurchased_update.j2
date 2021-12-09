@@ -1,0 +1,31 @@
+{% extends "main.j2" %}
+
+{% block body %}
+<form action="/productspurchased/update/{{product[0]['productID']}}/{{product[0]['purchaseID']}}" method="post">
+	<h2>Update Entry for Product Purchased Relationship {{product[0]['productID']}} - {{product[0]['purchaseID']}}</h2>
+
+    <br>
+	<label for="productID">Product ID:</label>
+    <select id="productID" name="productID">
+    	<!-- Include an entry at the top as the current -->
+    	<option selected value="{{product[0]['productID']}}">{{product[0]['productID']}} (current value)</option>
+    	<!-- Now add all the possible product IDs -->
+        {% for i in products %}
+        <option value="{{i['productID']}}">{{i['productID']}} ({{i['productName']}})</option>
+        {% endfor %}
+    </select>
+
+    <label for="purchaseID">Purchase ID:</label>
+    <select id="purchaseID" name="purchaseID">
+    	<!-- Include an entry at the top as the current -->
+    	<option selected value="{{product[0]['purchaseID']}}">{{product[0]['purchaseID']}} (current value)</option>
+    	<!-- Now add all possible purchase IDs -->
+        {% for i in saledata %}
+        <option value="{{i['purchaseID']}}">{{i['purchaseID']}} ({{i['total']}})</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+	<input type="submit" value="Enter" />
+</form>
+{% endblock %}

@@ -1,0 +1,4 @@
+db_username = "cs340_uname"
+db_password = "password_lmao"
+db_name = "cs340_uname"
+db_host = "classmysql.engr.oregonstate.edu"

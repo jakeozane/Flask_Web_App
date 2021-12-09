@@ -11,11 +11,7 @@ pip3 install --user -r requirements.txt
 ```
 python3 server.py
 ```
-## Outdated / Backup
 
-```
-export FLASK_APP=server.py; flask run --host 0.0.0.0 --port 4096
-```
 # Compile PDF with `pandoc`
 
 ```bash
